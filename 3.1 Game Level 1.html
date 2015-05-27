@@ -1,0 +1,341 @@
+<title> Save the PENGUIN - Level 1 </title>
+
+<!-- copy and paste the next 2 lines to setup the sound files, you must modify the loadsoundchrome.js file with your sounds -->
+<script type="text/javascript" src="Script/soundmanager2.js"></script>
+<script type="text/javascript" src="Script/loadsoundchrome.js"></script>
+<!-- Stop copying here -->
+
+<center>
+    <script type="text/javascript" src="Script/processing-1.4.1.js"></script>
+    <script type="text/processing" data-processing-target="mycanvas">
+
+/* @pjs globalKeyEvents = "true"; */
+
+int Penguin;
+int gem;
+
+int x[] = new int [100];
+int y[] = new int [100];
+int n[] = new int [100];
+int bg[] = new int [20];
+int small[] = new int [100];
+int big[] = new int [100];
+int time[] = new int [100];
+int monst[] = new int [100];
+int dir[] = new int [500];
+int dist[] = new int [500];
+int ext[] = new int [500];
+
+void setup()
+{
+	size(700,800);  
+    background(0);
+    frameRate(60);    
+
+	n[0] = 1;
+	while (n[0] <= 11)
+	{
+		bg[n[0]] = loadImage("Images/sprite/bglava/bg"+n[0]+".png");
+		n[0] += 1;
+	}
+	
+	n[90] = 1;
+ 	while (n[90] <= 4)
+ 	{
+ 		monst[n[90]] = loadImage("Images/monster"+n[90]+".png");
+ 		n[90] += 1;
+ 	}
+ 	
+ 	Penguin = loadImage("Images/penguinStanding1.png");
+    gem = loadImage("Images/gem.png");
+    
+    x[1] = 30;
+    y[1] = 30;
+    
+    x[2] = 100;
+    y[2] = 100;
+    x[3] = 600;
+    y[3] = 100;
+    x[4] = 70;
+    y[4] = 100;
+    x[5] = 70;
+    y[5] = 600;
+    
+    x[6] = 100;
+    y[6] = 700;
+    x[7] = 600;
+    y[7] = 100;
+    x[8] = 600;
+    y[8] = 400;
+    x[9] = 600;
+    y[9] = 700;
+    
+    ext[0] = 1;
+    ext[1] = 1;
+    ext[2] = 1;
+    ext[3] = 1;
+    
+    dir[0] = 1;
+    dir[1] = 1;
+    dir[2] = 1;
+    dir[3] = 1;
+    
+}
+
+
+void draw()
+{
+	background(0,0,0);		
+	
+	/*
+	//background music
+	if(musicCont == 0)
+	{
+		soundManager.play('s2');
+		musicCont = 1;
+	}
+	
+	//mouse button control
+	if(mousePressed == true && mouseButton == LEFT)
+	{
+		mouseCont = 1;
+	}
+	*/
+	
+	
+	//BACKGROUND
+	n[1] = 1;
+	small[0] = 0;
+	big[0] = 3;
+	while (small[0] < 34)
+	{
+		if (time[0] >= small[0] && time[0] < big[0])
+		{
+			image(bg[n[1]], 0,0,700,800);
+		}
+		
+		n[1] += 1;
+		small[0] += 3;
+		big[0] += 3;
+	}
+	
+	if (time[0] >= 30)
+	{
+		time[0] = 0;
+	}
+	
+	time[0] += 1;
+	
+	//starting point
+	fill(153,0,33);
+	stroke(153,0,33);
+	rect(0,0,50,50);
+
+	fill(255,200,111);
+	text("START",6,30);
+	
+	
+	//ending point
+	fill(153,0,33);
+	rect(350,400,50,50);
+	
+	fill(255,200,111);
+	text("END",363,430);
+	
+	image(Penguin, x[1]-25, y[1]-25, 50,50);
+	
+	image(monst[1], x[2]-25, y[2]-25,50,50);
+	image(monst[2], x[3]-25, y[3]-25,50,50);
+	image(monst[3], x[4]-25, y[4]-25,50,50);
+	image(monst[4], x[5]-25, y[5]-25,50,50);
+	
+	if (ext[0] == 1)
+	{
+		image(gem,x[6]-15,y[6]-15,25,35);
+	}	
+	if (ext[1] == 1)
+	{
+		image(gem,x[7]-15,y[7]-15,25,35);
+	}
+	if (ext[2] == 1)
+	{
+		image(gem,x[8]-15,y[8]-15,25,35);
+	}	
+	if (ext[3] == 1)
+	{
+		image(gem,x[9]-15,y[9]-15,25,35);
+	}	
+	
+	
+	if (y[2] <= 15)
+	{
+		dir[0] = 1;
+	}
+	
+	if (dir[0] == 1)
+	{
+		y[2] += 11;
+	}
+	else
+	{
+		y[2] -= 11;
+	}	
+	
+	if (y[3] <= 15)
+	{
+		dir[1] = 1;
+	}
+	if (dir[1] == 1)
+	{
+		y[3] += 11;
+	}
+	else
+	{
+		y[3] -= 11;
+	}
+	
+	if (y[2] >= 785)
+	{
+		dir[0] = 0;
+	}
+	
+	if (y[3] >= 785)
+	{
+		dir[1] = 0;
+	}
+	
+	
+	if (x[4] <= 15)
+	{
+		dir[2] = 1;
+	}
+	if (dir[2] == 1)
+	{
+		x[4] += 10;
+	}	
+	else
+	{
+		x[4] -= 10;
+	}
+	
+	if (x[5] <= 15)
+	{
+		dir[3] = 1;
+	}
+	if (dir[3] == 1)
+	{
+		x[5] += 10;
+	}
+	else
+	{
+		x[5] -= 10;
+	}
+	
+	if (x[4] >= 685)
+	{
+		dir[2] = 0;
+	}
+	
+	if (x[5] >= 685)
+	{
+		dir[3] = 0;
+	}
+	
+	
+	dist[0] = (int)sqrt(sq(x[1]-x[2])+sq(y[1]-y[2]));
+	dist[1] = (int)sqrt(sq(x[1]-x[3])+sq(y[1]-y[3]));
+	dist[2] = (int)sqrt(sq(x[1]-x[4])+sq(y[1]-y[4]));
+	dist[3] = (int)sqrt(sq(x[1]-x[5])+sq(y[1]-y[5]));
+	
+	dist[4] = (int)sqrt(sq(x[1]-x[6])+sq(y[1]-y[6]));
+	dist[5] = (int)sqrt(sq(x[1]-x[7])+sq(y[1]-y[7]));
+	dist[6] = (int)sqrt(sq(x[1]-x[8])+sq(y[1]-y[8]));
+	dist[7] = (int)sqrt(sq(x[1]-x[9])+sq(y[1]-y[9]));
+	
+	
+	
+	if (dist[0] <= 25 || dist[1] <= 25 || dist[2] <= 25 || dist[3] <= 25)
+	{
+		link("4.1 Game Over.html");
+	}
+	
+	if (dist[4] <= 15)
+	{
+		ext[0] = 0;
+	}
+	if (dist[5] <= 15)
+	{
+		ext[1] = 0;
+	}
+	if (dist[6] <= 15)
+	{
+		ext[2] = 0;
+	}
+	if (dist[7] <= 15)
+	{
+		ext[3] = 0;
+	}
+	
+	if (x[1] <= 400 && x[1] >= 350 && y[1] <= 450 && y[1] >= 400 && ext[0] == 0 && ext[1] == 0 && ext[2] == 0 && ext[3] == 0)
+	{
+		link ("3.2 Game Level 2.html");
+	}
+}
+
+
+
+//mouse click control
+void mouseClicked()
+{
+	
+	
+}
+
+void keyPressed()
+{
+	if (keyCode == RIGHT)
+	{
+		x[1] += 15;
+		
+		if (x[1] >= 700)
+		{
+			x[1] = 0;
+		}
+	}
+	
+	if (keyCode == LEFT)
+	{
+		x[1] -= 15;
+		
+		if (x[1] <= 0)
+		{
+			x[1] = 700;
+		}	
+	}
+	
+	if (keyCode == UP)
+	{
+		y[1] -= 15;
+		
+		if (y[1] <= 0)
+		{
+			y[1] = 800;
+		}
+	}
+	
+	if (keyCode == DOWN)
+	{
+		y[1] += 15;
+		
+		if (y[1] >= 800)
+		{
+			y[1] = 0;
+		}
+	}
+	
+	
+}
+
+    </script>
+    <canvas id="mycanvas"></canvas>
+</center>
